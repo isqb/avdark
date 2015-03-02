@@ -2,7 +2,7 @@
  * Implementation of test cases using atomic and non-atomic increments
  * and decrements.
  *
- * 
+ *
  * Course: Advanced Computer Architecture, Uppsala University
  * Course Part: Lab assignment 2
  *
@@ -20,6 +20,12 @@ increase(int thread, int iterations, volatile int *data)
         /* TASK: Implement a loop that increments *data by 1 using
          * non-atomic increment instructions. See lab2_asm.h.
          */
+         for (int i = 0; i < iterations; i++) {
+                 int32_t a;
+                 a = *data;
+                 asm_inc_int32(&a);
+                 *data = a;
+        }
 }
 
 static void
@@ -28,6 +34,12 @@ decrease(int thread, int iterations, volatile int *data)
         /* TASK: Implement a loop that decrements *data by 1 using
          * non-atomic decrement instructions. See lab2_asm.h.
          */
+         for (int i = 0; i < iterations; i++) {
+                  int32_t a;
+                  a = *data;
+                  asm_dec_int32(&a);
+                  *data = a;
+         }
 }
 
 
@@ -37,6 +49,12 @@ increase_atomic(int thread, int iterations, volatile int *data)
         /* TASK: Implement a loop that increments *data by 1 using
          * atomic increment instructions. See lab2_asm.h.
          */
+        for (int i = 0; i < iterations; i++) {
+                 int32_t a;
+                 a = *data;
+                 asm_atomic_inc_int32(&a);
+                 *data = a;
+        }
 }
 
 static void
@@ -45,6 +63,12 @@ decrease_atomic(int thread, int iterations, volatile int *data)
         /* TASK: Implement a loop that decrements *data by 1 using
          * atomic decrement instructions. See lab2_asm.h.
          */
+        for (int i = 0; i < iterations; i++) {
+                 int32_t a;
+                 a = *data;
+                 asm_atomic_dec_int32(&a);
+                 *data = a;
+        }
 }
 
 test_impl_t test_impl_incdec_atomic = {
