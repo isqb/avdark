@@ -39,6 +39,7 @@ impl_enter_critical(int thread)
          * other thread. */
 
         flag[thread] = 1;
+        MFENCE();
         while(flag[!thread])
         {
                 if (turn != thread)
@@ -49,6 +50,7 @@ impl_enter_critical(int thread)
                         
                         }
                         flag[thread] = 1;
+                        MFENCE();
                 }
         }
 }
@@ -64,7 +66,9 @@ impl_exit_critical(int thread)
         assert(thread == 0 || thread == 1);
 
         turn = !thread;
+        MFENCE();
         flag[thread] = 0;
+        MFENCE();
 }
 
 
